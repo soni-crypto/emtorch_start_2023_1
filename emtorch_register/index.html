@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://emtorch.com/static/js/app_controll/emtorch-m-0.0.1.js"> </script>
+</head>
+<body>
+    <div>
+        <button id="push-button">Registrarse a notificaciones</button>
+    </div>
+    <script>
+                                            
+        const pushButton = document.getElementById("push-button");
+        const notify = new Notify();
+        notify.start("./emtorch-sw-0.0.1.js").then(data => {
+            pushButton.addEventListener("click", ()=>{
+                pushButton.textContent = "Registrandose....";
+                const data = {
+                    client_key: "zj9R6P7Bcrq9cHe96rWu7xnBFKovj849BRAOLXx2eAohcLHew4",
+                    category: "conductores",
+                    identifier: "",
+                    more: "",
+                };
+                const response = notify.registerUser(data).then(response =>{
+                    if (response.state === 200){
+                        pushButton.textContent = "Registrado";
+                        alert("¡Suscripción existosa!");
+                    }else{
+                        pushButton.textContent = "Error: " + response.state;
+                    }
+                }).catch((error)=>{
+                    console.error(error);
+                });
+            })
+        }).catch(error => {
+            console.error("error: ", error);
+        });
+    </script>
+</body>
+</html>
